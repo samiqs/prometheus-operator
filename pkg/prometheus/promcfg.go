@@ -405,6 +405,12 @@ func generateServiceMonitorConfig(version semver.Version, m *v1.ServiceMonitor, 
 		})
 	}
 
+	relabelings = append(relabelings, yaml.MapSlice{
+		{Key: "source_labels", Value: []string{"__meta_kubernetes_pod_node_name"}},
+		{Key: "target_label", Value: "node"},
+		{Key: "replacement", Value: "${1}"},
+	})
+
 	if ep.Port != "" {
 		relabelings = append(relabelings, yaml.MapSlice{
 			{Key: "target_label", Value: "endpoint"},
